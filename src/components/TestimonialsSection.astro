@@ -1,0 +1,55 @@
+---
+const testimonials = [
+  {
+    quote: "Summit Edge helped us restructure our operations and increase profitability by 30% in the first year. Their strategic insights were invaluable.",
+    author: "Michael Chen",
+    role: "Small Business Owner",
+  },
+  {
+    quote: "I was overwhelmed with tax planning until I started working with this team. They simplified everything and saved me thousands.",
+    author: "Rebecca Martinez",
+    role: "Independent Consultant",
+  },
+  {
+    quote: "Professional, responsive, and results-driven. They truly care about our success and it shows in everything they do.",
+    author: "David Thompson",
+    role: "Real Estate Investor",
+  },
+];
+---
+
+<section class="bg-white py-16">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-[color:var(--color-primary)] mb-4">
+        What Our Clients Are Saying
+      </h2>
+      <p class="text-lg text-slate-600">
+        Real results from real clients
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      {testimonials.map((testimonial) => (
+        <div class="bg-slate-50 rounded-card p-8 shadow-card hover:shadow-card-hover transition-shadow duration-300 relative">
+          <div class="absolute top-6 left-6 text-6xl text-[color:var(--color-secondary)] opacity-20">
+            "
+          </div>
+          <div class="relative">
+            <p class="text-slate-700 italic mb-6 leading-relaxed">
+              {testimonial.quote}
+            </p>
+            <div class="border-t border-slate-200 pt-4">
+              <p class="font-semibold text-[color:var(--color-primary)]">
+                {testimonial.author}
+              </p>
+              <p class="text-sm text-slate-500">
+                {testimonial.role}
+              </p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

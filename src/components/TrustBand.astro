@@ -1,0 +1,33 @@
+---
+const trustPoints = [
+  {
+    icon: "🏆",
+    label: "10+ Years Experience",
+  },
+  {
+    icon: "📍",
+    label: "Local Raleigh Expertise",
+  },
+  {
+    icon: "💎",
+    label: "Transparent, Flat-Fee Services",
+  },
+  {
+    icon: "🤝",
+    label: "Trusted by Small Businesses",
+  },
+];
+---
+
+<section class="bg-gradient-to-r from-blue-50 to-slate-50 py-12 border-y border-slate-200">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+      {trustPoints.map((point) => (
+        <div class="flex flex-col items-center text-center space-y-2">
+          <div class="text-3xl md:text-4xl">{point.icon}</div>
+          <p class="text-sm md:text-base font-medium text-slate-700">{point.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
