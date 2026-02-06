@@ -1,0 +1,100 @@
+---
+import { Navbar, Footer } from "@indirecttek/essentials-engine";
+import { siteConfig } from "../config/siteConfig";
+import "../styles/global.css";
+
+// Check if this is a payment success
+const url = new URL(Astro.request.url);
+const isPaymentSuccess = url.searchParams.get('payment') === 'success';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thank You | {siteConfig.businessName}</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+
+  <body
+    class="bg-[color:var(--color-background)] text-[color:var(--color-foreground)] min-h-screen antialiased"
+    style={`
+      --color-primary: ${siteConfig.theme.primary};
+      --color-secondary: ${siteConfig.theme.secondary};
+      --color-accent: ${siteConfig.theme.accent};
+      --color-background: ${siteConfig.theme.background};
+      --color-foreground: ${siteConfig.theme.foreground};
+    `}
+  >
+    <Navbar config={siteConfig} />
+
+    <main class="py-20 md:py-32">
+      <div class="max-w-2xl mx-auto px-4 text-center">
+        <!-- Success Icon -->
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-8">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+
+        {isPaymentSuccess ? (
+          <>
+            <h1 class="text-3xl md:text-4xl font-bold text-[color:var(--color-primary)] mb-4">
+              Payment Received!
+            </h1>
+            <p class="text-lg text-[color:var(--color-foreground)]/70 mb-8">
+              Thank you for your deposit. We've received your payment and will be in touch shortly to confirm your service date.
+            </p>
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+              <h2 class="font-semibold text-[color:var(--color-primary)] mb-2">What happens next?</h2>
+              <ul class="text-left text-[color:var(--color-foreground)]/70 space-y-2">
+                <li class="flex items-start gap-2">
+                  <span class="text-green-600 mt-1">✓</span>
+                  <span>You'll receive a confirmation email within a few minutes</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-green-600 mt-1">✓</span>
+                  <span>We'll call you within 24 hours to confirm your service date</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-green-600 mt-1">✓</span>
+                  <span>Our team will arrive on the scheduled day ready to work</span>
+                </li>
+              </ul>
+            </div>
+          </>
+        ) : (
+          <>
+            <h1 class="text-3xl md:text-4xl font-bold text-[color:var(--color-primary)] mb-4">
+              Thank You!
+            </h1>
+            <p class="text-lg text-[color:var(--color-foreground)]/70 mb-8">
+              We've received your message and will get back to you within 24 hours.
+            </p>
+          </>
+        )}
+
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 bg-[color:var(--color-primary)] text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Home
+        </a>
+
+        <div class="mt-12 text-[color:var(--color-foreground)]/60">
+          <p>Questions? Give us a call:</p>
+          <a href={`tel:${siteConfig.contactInfo.phone}`} class="text-[color:var(--color-primary)] font-semibold hover:underline">
+            {siteConfig.contactInfo.phone}
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <Footer config={siteConfig} />
+  </body>
+</html>

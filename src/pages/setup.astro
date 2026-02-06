@@ -1,0 +1,211 @@
+---
+import { siteConfig } from "../config/siteConfig";
+import "../styles/global.css";
+
+// Code examples as strings to avoid Astro parsing issues
+const codeResend = `npx wrangler pages secret put RESEND_API_KEY
+# Paste your Resend API key when prompted
+
+npx wrangler pages secret put CONTACT_EMAIL
+# Enter the email where you want to receive messages
+
+npx wrangler pages secret put BUSINESS_NAME
+# Enter your business name`;
+
+const codeCalendly = `integrations: \{
+  scheduling: \{
+    provider: "calendly",
+    url: "https://calendly.com/YOUR-NAME/YOUR-EVENT",
+    buttonText: "Schedule Free Estimate",
+  \},
+  // ...
+\}`;
+
+const codeStripeSecret = `npx wrangler pages secret put STRIPE_SECRET_KEY
+# Paste your Stripe secret key when prompted`;
+
+const codeStripeConfig = `integrations: \{
+  payments: \{
+    provider: "stripe",
+    mode: "deposit",
+    depositAmount: 5000, // Amount in cents ($50.00)
+    buttonText: "Pay $50 Deposit",
+  \},
+  // ...
+\}`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Setup Guide | {siteConfig.businessName}</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+
+  <body class="bg-gray-50 text-gray-900 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 py-12">
+      <header class="mb-12">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">
+          Site Setup Guide
+        </h1>
+        <p class="text-gray-600">
+          Follow these steps to configure your website integrations.
+        </p>
+      </header>
+
+      <!-- Quick Start -->
+      <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-sm font-bold">✓</span>
+          What's Already Working
+        </h2>
+        <ul class="space-y-2 text-gray-600">
+          <li class="flex items-center gap-2">
+            <span class="text-green-600">✓</span> Website is live and accessible
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-green-600">✓</span> SEO and meta tags configured
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-green-600">✓</span> Mobile responsive design
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-green-600">✓</span> Contact form ready (needs email setup)
+          </li>
+        </ul>
+      </section>
+
+      <!-- Email Setup (Resend) -->
+      <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-sm font-bold">1</span>
+          Contact Form Email Setup (Resend)
+        </h2>
+        <p class="text-gray-600 mb-4">
+          When someone fills out your contact form, you'll receive an email. Here's how to set it up:
+        </p>
+        <ol class="space-y-4 text-gray-700">
+          <li class="pl-6 border-l-2 border-blue-200">
+            <strong>Create a Resend account</strong>
+            <p class="text-gray-600 text-sm mt-1">
+              Go to <a href="https://resend.com/signup" target="_blank" class="text-blue-600 underline">resend.com/signup</a> and create a free account
+            </p>
+          </li>
+          <li class="pl-6 border-l-2 border-blue-200">
+            <strong>Get your API key</strong>
+            <p class="text-gray-600 text-sm mt-1">
+              In Resend dashboard, go to API Keys and Create API Key
+            </p>
+          </li>
+          <li class="pl-6 border-l-2 border-blue-200">
+            <strong>Add secrets to Cloudflare</strong>
+            <p class="text-gray-600 text-sm mt-1">Run these commands in your terminal:</p>
+            <pre class="bg-gray-900 text-green-400 p-3 rounded-lg text-sm mt-2 overflow-x-auto">{codeResend}</pre>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Calendly Setup -->
+      <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-sm font-bold">2</span>
+          Online Scheduling (Calendly)
+        </h2>
+        <p class="text-gray-600 mb-4">
+          Let customers book appointments directly from your website.
+        </p>
+        <ol class="space-y-4 text-gray-700">
+          <li class="pl-6 border-l-2 border-purple-200">
+            <strong>Create a Calendly account</strong>
+            <p class="text-gray-600 text-sm mt-1">
+              Go to <a href="https://calendly.com/signup" target="_blank" class="text-purple-600 underline">calendly.com/signup</a> (free plan available)
+            </p>
+          </li>
+          <li class="pl-6 border-l-2 border-purple-200">
+            <strong>Create an event type</strong>
+            <p class="text-gray-600 text-sm mt-1">
+              Create an event like "Free Estimate" or "Consultation" with your availability
+            </p>
+          </li>
+          <li class="pl-6 border-l-2 border-purple-200">
+            <strong>Copy your booking link</strong>
+            <p class="text-gray-600 text-sm mt-1">
+              It looks like: https://calendly.com/your-name/free-estimate
+            </p>
+          </li>
+          <li class="pl-6 border-l-2 border-purple-200">
+            <strong>Update your site config</strong>
+            <p class="text-gray-600 text-sm mt-1">
+              In src/config/siteConfig.ts, update:
+            </p>
+            <pre class="bg-gray-900 text-green-400 p-3 rounded-lg text-sm mt-2 overflow-x-auto">{codeCalendly}</pre>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Stripe Setup -->
+      <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 text-sm font-bold">3</span>
+          Online Payments (Stripe)
+        </h2>
+        <p class="text-gray-600 mb-4">
+          Accept deposits or payments directly from your website.
+        </p>
+        <ol class="space-y-4 text-gray-700">
+          <li class="pl-6 border-l-2 border-indigo-200">
+            <strong>Create a Stripe account</strong>
+            <p class="text-gray-600 text-sm mt-1">
+              Go to <a href="https://dashboard.stripe.com/register" target="_blank" class="text-indigo-600 underline">stripe.com</a> and create a business account
+            </p>
+          </li>
+          <li class="pl-6 border-l-2 border-indigo-200">
+            <strong>Get your Secret Key</strong>
+            <p class="text-gray-600 text-sm mt-1">
+              In Stripe Dashboard, go to Developers, then API Keys, and copy the Secret key
+            </p>
+          </li>
+          <li class="pl-6 border-l-2 border-indigo-200">
+            <strong>Add secret to Cloudflare</strong>
+            <pre class="bg-gray-900 text-green-400 p-3 rounded-lg text-sm mt-2 overflow-x-auto">{codeStripeSecret}</pre>
+          </li>
+          <li class="pl-6 border-l-2 border-indigo-200">
+            <strong>Configure payment amount</strong>
+            <p class="text-gray-600 text-sm mt-1">
+              In src/config/siteConfig.ts, update:
+            </p>
+            <pre class="bg-gray-900 text-green-400 p-3 rounded-lg text-sm mt-2 overflow-x-auto">{codeStripeConfig}</pre>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Testing -->
+      <section class="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8">
+        <h2 class="text-xl font-bold text-yellow-800 mb-4 flex items-center gap-2">
+          <span>⚠️</span> Testing Tips
+        </h2>
+        <ul class="space-y-2 text-yellow-800">
+          <li>• <strong>Stripe:</strong> Use test mode first (keys start with sk_test_)</li>
+          <li>• <strong>Test card:</strong> 4242 4242 4242 4242, any future date, any CVC</li>
+          <li>• <strong>Contact form:</strong> Submit a test message to verify emails arrive</li>
+          <li>• <strong>Calendly:</strong> Test booking flow on your own calendar first</li>
+        </ul>
+      </section>
+
+      <!-- Need Help -->
+      <section class="bg-green-50 border border-green-200 rounded-xl p-6">
+        <h2 class="text-xl font-bold text-green-800 mb-2">Need Help?</h2>
+        <p class="text-green-700">
+          If you get stuck, email us at <a href="mailto:support@getyours.site" class="underline">support@getyours.site</a> and we'll help you get set up.
+        </p>
+      </section>
+
+      <footer class="mt-12 text-center text-gray-500 text-sm">
+        <a href="/" class="text-blue-600 underline">Back to your website</a>
+      </footer>
+    </div>
+  </body>
+</html>
