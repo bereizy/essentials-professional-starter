@@ -65,4 +65,22 @@ export const siteConfig: SiteConfig = {
       "person reviewing financial charts",
     ],
   },
+
+  // Integrations - Scheduling, Payments, Email
+  integrations: {
+    scheduling: {
+      provider: "calendly",
+      url: "https://calendly.com/summitedge-demo/consultation",
+      buttonText: "Schedule Consultation",
+    },
+    payments: {
+      provider: "stripe",
+      mode: "deposit",
+      depositAmount: 20000, // $200.00 retainer
+      buttonText: "Pay $200 Retainer",
+    },
+    email: {
+      provider: "resend",
+    },
+  },
 };
